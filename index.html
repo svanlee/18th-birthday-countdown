@@ -20,13 +20,14 @@ body {
   text-align: center;
   color: #e0e0e0;
 
-  /* Cinematic apocalyptic gradient background */
-  background: linear-gradient(-45deg, #0a0a0a, #330000, #003300, #220022, #110011, #440011, #002211);
-  background-size: 800% 800%;
-  animation: gradientBG 30s ease infinite;
+  /* Vivid animated gradient */
+  background: linear-gradient(-45deg, #440000, #ff3300, #33ff33, #ffcc00, #4400ff, #00ffff);
+  background-size: 600% 600%;
+  animation: gradientBG 25s ease infinite;
+  position: relative;
 }
 
-/* Gradient animation */
+/* Animated gradient movement */
 @keyframes gradientBG {
   0% { background-position: 0% 50%; }
   25% { background-position: 50% 100%; }
@@ -41,6 +42,7 @@ h1 {
   color: #ff3b3b;
   text-shadow: 0 0 15px #ff3b3b, 0 0 40px #ff8800, 0 0 80px #ff0000;
   animation: flicker 2s infinite;
+  z-index: 10;
 }
 
 #countdown {
@@ -49,6 +51,7 @@ h1 {
   text-shadow: 0 0 20px #00ff88, 0 0 50px #00ff88;
   margin: 20px 0;
   animation: countdownPulse 1s infinite alternate;
+  z-index: 10;
 }
 
 .subtext {
@@ -56,6 +59,7 @@ h1 {
   color: #aaa;
   margin-bottom: 10px;
   animation: flickerSoft 5s infinite;
+  z-index: 10;
 }
 
 .warning {
@@ -64,6 +68,7 @@ h1 {
   color: #ff5555;
   text-shadow: 0 0 15px #ff0000, 0 0 30px #ff5500;
   letter-spacing: 1px;
+  z-index: 10;
 }
 
 /* ================= PROGRESS BAR ================= */
@@ -75,6 +80,7 @@ h1 {
   border-radius: 10px;
   margin-top: 30px;
   overflow: hidden;
+  z-index: 10;
 }
 
 .progress-bar {
@@ -93,13 +99,14 @@ footer {
   color: #555;
   font-size: 0.9em;
   animation: flickerSoft 4s infinite;
+  z-index: 10;
 }
 
 /* ================= PARTICLES ================= */
 .particle {
   position: absolute;
-  width: 3px;
-  height: 3px;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
   opacity: 0.5;
   animation: floatParticle linear infinite;
@@ -111,8 +118,25 @@ footer {
 
 @keyframes floatParticle {
   0% { transform: translateY(0) translateX(0); }
-  50% { transform: translateY(-150px) translateX(50px); }
-  100% { transform: translateY(-300px) translateX(-50px); }
+  50% { transform: translateY(-200px) translateX(80px); }
+  100% { transform: translateY(-400px) translateX(-80px); }
+}
+
+/* ================= OVERLAY HAZE ================= */
+body::before {
+  content: '';
+  position: absolute;
+  top:0; left:0; right:0; bottom:0;
+  background: radial-gradient(circle, rgba(255,0,0,0.1), transparent 70%);
+  pointer-events: none;
+  animation: overlayPulse 6s infinite alternate;
+  z-index: 5;
+}
+
+@keyframes overlayPulse {
+  0% { opacity: 0.05; }
+  50% { opacity: 0.25; }
+  100% { opacity: 0.05; }
 }
 
 /* ================= ANIMATIONS ================= */
@@ -142,23 +166,13 @@ footer {
 
 /* ================= CRITICAL MODE ================= */
 body.critical {
-  animation: shake 0.3s infinite, gradientBG 30s ease infinite;
-  background: linear-gradient(-45deg, #330000, #110000, #220011);
+  animation: shake 0.3s infinite, gradientBG 25s ease infinite;
+  background: linear-gradient(-45deg, #330000, #ff0000, #220011);
 }
-body.critical h1 {
-  color: #ff0000;
-  text-shadow: 0 0 30px #ff0000, 0 0 80px #ff5500;
-}
-body.critical #countdown {
-  color: #ff6666;
-  text-shadow: 0 0 20px #ff0000, 0 0 50px #ff3300;
-}
-body.critical .subtext {
-  color: #ffaaaa;
-}
-body.critical .progress-bar {
-  background: linear-gradient(90deg, #ff0000, #ff6600);
-}
+body.critical h1 { color: #ff0000; text-shadow: 0 0 30px #ff0000,0 0 80px #ff5500; }
+body.critical #countdown { color:#ff6666; text-shadow:0 0 20px #ff0000,0 0 50px #ff3300; }
+body.critical .subtext { color:#ffaaaa; }
+body.critical .progress-bar { background: linear-gradient(90deg,#ff0000,#ff6600); }
 </style>
 </head>
 <body>
@@ -183,11 +197,11 @@ const startDate = new Date().getTime();
 const siren = document.getElementById('siren');
 let criticalMode = false;
 
-// Create particles: red, green, orange sparks
+// create particles
 for(let i=0;i<60;i++){
   const p = document.createElement('div');
   p.classList.add('particle');
-  const r = Math.random();
+  const r=Math.random();
   if(r<0.4)p.classList.add('red');
   else if(r<0.7)p.classList.add('green');
   else p.classList.add('orange');
@@ -232,6 +246,12 @@ function updateCountdown(){
     criticalMode=true;
   }
 }
+
+updateCountdown();
+setInterval(updateCountdown,1000);
+</script>
+</body>
+</html>
 
 updateCountdown();
 setInterval(updateCountdown,1000);
