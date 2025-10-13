@@ -9,8 +9,8 @@
 
 body {
   font-family: 'Share Tech Mono', monospace;
-  background: radial-gradient(circle at center, #080808 0%, #000 100%);
-  color: #e0e0e0;
+  background: radial-gradient(circle at center, #0a0a0a 0%, #1a1a2e 100%);
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,21 +18,21 @@ body {
   height: 100vh;
   margin: 0;
   text-align: center;
-  overflow: hidden;
-  animation: pulseBG 8s infinite alternate;
+  animation: apocalypseBG 10s infinite alternate;
+  color: #e0e0e0;
 }
 
 h1 {
   font-size: 3em;
   color: #ff3b3b;
-  text-shadow: 0 0 10px #ff3b3b, 0 0 25px #ff3b3b;
+  text-shadow: 0 0 10px #ff3b3b, 0 0 25px #ff3b3b, 0 0 50px #ff8800;
   animation: flicker 2s infinite;
 }
 
 #countdown {
   font-size: 2.5em;
   color: #00ff88;
-  text-shadow: 0 0 20px #00ff88;
+  text-shadow: 0 0 20px #00ff88, 0 0 40px #00ff88;
   margin: 20px 0;
   animation: countdownPulse 1s infinite alternate;
 }
@@ -48,7 +48,7 @@ h1 {
   font-size: 1.3em;
   margin-top: 25px;
   color: #ff5555;
-  text-shadow: 0 0 15px #ff0000;
+  text-shadow: 0 0 15px #ff0000, 0 0 30px #ff5500;
   letter-spacing: 1px;
 }
 
@@ -79,22 +79,26 @@ footer {
   animation: flickerSoft 4s infinite;
 }
 
-/* Particles */
+/* Floating particles: red sparks + green mist */
 .particle {
   position: absolute;
-  width: 2px;
-  height: 2px;
-  background: #ff3b3b;
+  width: 3px;
+  height: 3px;
   border-radius: 50%;
+  opacity: 0.6;
   animation: floatParticle linear infinite;
-  opacity: 0.7;
 }
 
-/* Animations */
-@keyframes pulseBG {
-  0% { background: radial-gradient(circle at center, #080808 0%, #000 100%); }
-  50% { background: radial-gradient(circle at center, #111 0%, #000 100%); }
-  100% { background: radial-gradient(circle at center, #080808 0%, #000 100%); }
+.particle.red { background: #ff3b3b; }
+.particle.green { background: #33ff55; }
+
+/* Background animations */
+@keyframes apocalypseBG {
+  0% { background: radial-gradient(circle at center, #0a0a0a 0%, #1a1a2e 100%); }
+  25% { background: radial-gradient(circle at center, #220000 0%, #1a1a2e 100%); }
+  50% { background: radial-gradient(circle at center, #331a00 0%, #2e1a2e 100%); }
+  75% { background: radial-gradient(circle at center, #002211 0%, #1a2e2e 100%); }
+  100% { background: radial-gradient(circle at center, #0a0a0a 0%, #1a1a2e 100%); }
 }
 
 @keyframes flicker {
@@ -116,8 +120,8 @@ footer {
 }
 @keyframes floatParticle {
   0% { transform: translateY(0) translateX(0); }
-  50% { transform: translateY(-100px) translateX(30px); }
-  100% { transform: translateY(-200px) translateX(-30px); }
+  50% { transform: translateY(-120px) translateX(40px); }
+  100% { transform: translateY(-240px) translateX(-40px); }
 }
 @keyframes shake {
   0%,100% { transform: translate(0,0); }
@@ -129,15 +133,15 @@ footer {
 /* CRITICAL MODE STYLES */
 body.critical {
   animation: shake 0.3s infinite;
-  background: radial-gradient(circle at center, #200 0%, #000 100%);
+  background: radial-gradient(circle at center, #330000 0%, #110000 100%);
 }
 body.critical h1 {
   color: #ff0000;
-  text-shadow: 0 0 20px #ff0000, 0 0 60px #ff0000;
+  text-shadow: 0 0 30px #ff0000, 0 0 80px #ff5500;
 }
 body.critical #countdown {
   color: #ff6666;
-  text-shadow: 0 0 15px #ff0000;
+  text-shadow: 0 0 20px #ff0000, 0 0 50px #ff3300;
 }
 body.critical .subtext {
   color: #ffaaaa;
@@ -148,7 +152,7 @@ body.critical .progress-bar {
 </style>
 </head>
 <body>
-<h1>⚠️ EX-WIFE EVENT HORIZON ⚠️</h1>
+<h1>☣️ EX-WIFE EVENT HORIZON ☣️</h1>
 <div id="countdown">Loading existential dread...</div>
 <div class="subtext" id="status">Peace levels: stable | Emotional shields: holding</div>
 <div class="warning">Impact Date: August 8, 2032</div>
@@ -159,7 +163,6 @@ body.critical .progress-bar {
 
 <footer>Powered by therapy, sarcasm, and sheer willpower.</footer>
 
-<!-- Siren -->
 <audio id="siren" preload="auto">
   <source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" type="audio/ogg">
 </audio>
@@ -170,14 +173,15 @@ const startDate = new Date().getTime();
 const siren = document.getElementById('siren');
 let criticalMode = false;
 
-// Generate floating particles
+// Create particles: red sparks and green mist
 for(let i=0;i<50;i++){
   const p = document.createElement('div');
   p.classList.add('particle');
+  p.classList.add(Math.random()>0.5?'red':'green');
   p.style.top = Math.random()*window.innerHeight+'px';
   p.style.left = Math.random()*window.innerWidth+'px';
   p.style.animationDuration = (2 + Math.random()*3)+'s';
-  p.style.opacity = Math.random();
+  p.style.opacity = Math.random()*0.7 + 0.3;
   document.body.appendChild(p);
 }
 
@@ -208,7 +212,7 @@ function updateCountdown(){
 
   if(distance < 365*24*60*60*1000 && !criticalMode){
     document.body.classList.add('critical');
-    document.getElementById("status").innerHTML="⚠️ CRITICAL ALERT: Peace levels collapsing! Shields failing!";
+    document.getElementById("status").innerHTML="☣️ CRITICAL ALERT: Peace collapsing! Shields failing!";
     siren.loop = true;
     siren.volume = 0.3;
     siren.play().catch(()=>{});
