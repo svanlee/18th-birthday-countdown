@@ -7,32 +7,46 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
+/* ================= BODY & BACKGROUND ================= */
 body {
   font-family: 'Share Tech Mono', monospace;
-  background: radial-gradient(circle at center, #0a0a0a 0%, #1a1a2e 100%);
+  margin: 0;
+  height: 100vh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  margin: 0;
   text-align: center;
-  animation: apocalypseBG 10s infinite alternate;
   color: #e0e0e0;
+
+  /* Cinematic apocalyptic gradient background */
+  background: linear-gradient(-45deg, #0a0a0a, #330000, #003300, #220022, #110011, #440011, #002211);
+  background-size: 800% 800%;
+  animation: gradientBG 30s ease infinite;
 }
 
+/* Gradient animation */
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  25% { background-position: 50% 100%; }
+  50% { background-position: 100% 50%; }
+  75% { background-position: 50% 0%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ================= HEADINGS & COUNTDOWN ================= */
 h1 {
   font-size: 3em;
   color: #ff3b3b;
-  text-shadow: 0 0 10px #ff3b3b, 0 0 25px #ff3b3b, 0 0 50px #ff8800;
+  text-shadow: 0 0 15px #ff3b3b, 0 0 40px #ff8800, 0 0 80px #ff0000;
   animation: flicker 2s infinite;
 }
 
 #countdown {
   font-size: 2.5em;
   color: #00ff88;
-  text-shadow: 0 0 20px #00ff88, 0 0 40px #00ff88;
+  text-shadow: 0 0 20px #00ff88, 0 0 50px #00ff88;
   margin: 20px 0;
   animation: countdownPulse 1s infinite alternate;
 }
@@ -52,6 +66,7 @@ h1 {
   letter-spacing: 1px;
 }
 
+/* ================= PROGRESS BAR ================= */
 .progress-container {
   width: 80%;
   height: 20px;
@@ -71,6 +86,7 @@ h1 {
   transition: width 1s linear;
 }
 
+/* ================= FOOTER ================= */
 footer {
   position: absolute;
   bottom: 15px;
@@ -79,28 +95,27 @@ footer {
   animation: flickerSoft 4s infinite;
 }
 
-/* Floating particles: red sparks + green mist */
+/* ================= PARTICLES ================= */
 .particle {
   position: absolute;
   width: 3px;
   height: 3px;
   border-radius: 50%;
-  opacity: 0.6;
+  opacity: 0.5;
   animation: floatParticle linear infinite;
 }
 
 .particle.red { background: #ff3b3b; }
 .particle.green { background: #33ff55; }
+.particle.orange { background: #ff8800; }
 
-/* Background animations */
-@keyframes apocalypseBG {
-  0% { background: radial-gradient(circle at center, #0a0a0a 0%, #1a1a2e 100%); }
-  25% { background: radial-gradient(circle at center, #220000 0%, #1a1a2e 100%); }
-  50% { background: radial-gradient(circle at center, #331a00 0%, #2e1a2e 100%); }
-  75% { background: radial-gradient(circle at center, #002211 0%, #1a2e2e 100%); }
-  100% { background: radial-gradient(circle at center, #0a0a0a 0%, #1a1a2e 100%); }
+@keyframes floatParticle {
+  0% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-150px) translateX(50px); }
+  100% { transform: translateY(-300px) translateX(-50px); }
 }
 
+/* ================= ANIMATIONS ================= */
 @keyframes flicker {
   0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
   20%, 24%, 55% { opacity: 0.4; }
@@ -118,11 +133,6 @@ footer {
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
-@keyframes floatParticle {
-  0% { transform: translateY(0) translateX(0); }
-  50% { transform: translateY(-120px) translateX(40px); }
-  100% { transform: translateY(-240px) translateX(-40px); }
-}
 @keyframes shake {
   0%,100% { transform: translate(0,0); }
   25% { transform: translate(3px,-2px); }
@@ -130,10 +140,10 @@ footer {
   75% { transform: translate(2px,1px); }
 }
 
-/* CRITICAL MODE STYLES */
+/* ================= CRITICAL MODE ================= */
 body.critical {
-  animation: shake 0.3s infinite;
-  background: radial-gradient(circle at center, #330000 0%, #110000 100%);
+  animation: shake 0.3s infinite, gradientBG 30s ease infinite;
+  background: linear-gradient(-45deg, #330000, #110000, #220011);
 }
 body.critical h1 {
   color: #ff0000;
@@ -173,14 +183,17 @@ const startDate = new Date().getTime();
 const siren = document.getElementById('siren');
 let criticalMode = false;
 
-// Create particles: red sparks and green mist
-for(let i=0;i<50;i++){
+// Create particles: red, green, orange sparks
+for(let i=0;i<60;i++){
   const p = document.createElement('div');
   p.classList.add('particle');
-  p.classList.add(Math.random()>0.5?'red':'green');
+  const r = Math.random();
+  if(r<0.4)p.classList.add('red');
+  else if(r<0.7)p.classList.add('green');
+  else p.classList.add('orange');
   p.style.top = Math.random()*window.innerHeight+'px';
   p.style.left = Math.random()*window.innerWidth+'px';
-  p.style.animationDuration = (2 + Math.random()*3)+'s';
+  p.style.animationDuration = (3 + Math.random()*3)+'s';
   p.style.opacity = Math.random()*0.7 + 0.3;
   document.body.appendChild(p);
 }
