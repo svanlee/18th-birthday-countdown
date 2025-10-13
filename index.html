@@ -3,258 +3,172 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EX-WIFE EVENT HORIZON</title>
+<title>Apocalyptic City Countdown</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+  body {
+    margin: 0;
+    overflow: hidden;
+    background: linear-gradient(to top, #0a0a0a 0%, #1a1a1a 70%, #2a2a2a 100%);
+    font-family: 'Arial', sans-serif;
+    color: #ff4c00;
+  }
 
-/* ================= BODY & BACKGROUND ================= */
-body {
-  font-family: 'Share Tech Mono', monospace;
-  margin: 0;
-  height: 100vh;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  color: #e0e0e0;
+  /* Countdown */
+  #countdown {
+    position: absolute;
+    top: 5%;
+    width: 100%;
+    text-align: center;
+    font-size: 3rem;
+    text-shadow: 0 0 10px #ff3300, 0 0 20px #ff3300;
+    z-index: 1000;
+  }
 
-  /* Vivid animated gradient */
-  background: linear-gradient(-45deg, #440000, #ff3300, #33ff33, #ffcc00, #4400ff, #00ffff);
-  background-size: 600% 600%;
-  animation: gradientBG 25s ease infinite;
-  position: relative;
-}
+  /* Buildings */
+  .building {
+    position: absolute;
+    bottom: 0;
+    background: #111;
+    border: 1px solid #333;
+    transform-origin: bottom center;
+    transition: transform 0.3s;
+  }
 
-/* Animated gradient movement */
-@keyframes gradientBG {
-  0% { background-position: 0% 50%; }
-  25% { background-position: 50% 100%; }
-  50% { background-position: 100% 50%; }
-  75% { background-position: 50% 0%; }
-  100% { background-position: 0% 50%; }
-}
+  .window {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #ffcc00;
+    opacity: 0.8;
+  }
 
-/* ================= HEADINGS & COUNTDOWN ================= */
-h1 {
-  font-size: 3em;
-  color: #ff3b3b;
-  text-shadow: 0 0 15px #ff3b3b, 0 0 40px #ff8800, 0 0 80px #ff0000;
-  animation: flicker 2s infinite;
-  z-index: 10;
-}
+  /* Flicker animation for windows */
+  @keyframes flicker {
+    0%, 49%, 51%, 100% { opacity: 0.8; }
+    50% { opacity: 0.1; }
+  }
 
-#countdown {
-  font-size: 2.5em;
-  color: #00ff88;
-  text-shadow: 0 0 20px #00ff88, 0 0 50px #00ff88;
-  margin: 20px 0;
-  animation: countdownPulse 1s infinite alternate;
-  z-index: 10;
-}
+  /* Particles/fire */
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, orange, red, transparent);
+    opacity: 0.7;
+    animation: rise 3s linear infinite;
+  }
 
-.subtext {
-  font-size: 1.2em;
-  color: #aaa;
-  margin-bottom: 10px;
-  animation: flickerSoft 5s infinite;
-  z-index: 10;
-}
+  @keyframes rise {
+    0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateY(-20vh) scale(1); opacity: 0; }
+  }
 
-.warning {
-  font-size: 1.3em;
-  margin-top: 25px;
-  color: #ff5555;
-  text-shadow: 0 0 15px #ff0000, 0 0 30px #ff5500;
-  letter-spacing: 1px;
-  z-index: 10;
-}
+  /* Smoke layers */
+  .smoke {
+    position: absolute;
+    width: 300px;
+    height: 100px;
+    bottom: 0;
+    background: radial-gradient(circle, rgba(200,200,200,0.2), transparent);
+    animation: drift 8s linear infinite;
+    opacity: 0.4;
+    border-radius: 50%;
+  }
 
-/* ================= PROGRESS BAR ================= */
-.progress-container {
-  width: 80%;
-  height: 20px;
-  background: #222;
-  border: 1px solid #444;
-  border-radius: 10px;
-  margin-top: 30px;
-  overflow: hidden;
-  z-index: 10;
-}
+  @keyframes drift {
+    0% { transform: translateX(0) scale(1); opacity: 0.2; }
+    50% { transform: translateX(-100px) scale(1.2); opacity: 0.5; }
+    100% { transform: translateX(0) scale(1); opacity: 0.2; }
+  }
 
-.progress-bar {
-  height: 100%;
-  background: linear-gradient(270deg, #00ff88, #ffcc00, #ff3300);
-  background-size: 600% 600%;
-  animation: gradientMove 4s ease infinite;
-  width: 100%;
-  transition: width 1s linear;
-}
-
-/* ================= FOOTER ================= */
-footer {
-  position: absolute;
-  bottom: 15px;
-  color: #555;
-  font-size: 0.9em;
-  animation: flickerSoft 4s infinite;
-  z-index: 10;
-}
-
-/* ================= PARTICLES ================= */
-.particle {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  opacity: 0.5;
-  animation: floatParticle linear infinite;
-}
-
-.particle.red { background: #ff3b3b; }
-.particle.green { background: #33ff55; }
-.particle.orange { background: #ff8800; }
-
-@keyframes floatParticle {
-  0% { transform: translateY(0) translateX(0); }
-  50% { transform: translateY(-200px) translateX(80px); }
-  100% { transform: translateY(-400px) translateX(-80px); }
-}
-
-/* ================= OVERLAY HAZE ================= */
-body::before {
-  content: '';
-  position: absolute;
-  top:0; left:0; right:0; bottom:0;
-  background: radial-gradient(circle, rgba(255,0,0,0.1), transparent 70%);
-  pointer-events: none;
-  animation: overlayPulse 6s infinite alternate;
-  z-index: 5;
-}
-
-@keyframes overlayPulse {
-  0% { opacity: 0.05; }
-  50% { opacity: 0.25; }
-  100% { opacity: 0.05; }
-}
-
-/* ================= ANIMATIONS ================= */
-@keyframes flicker {
-  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
-  20%, 24%, 55% { opacity: 0.4; }
-}
-@keyframes flickerSoft {
-  0%, 100% { opacity: 0.9; }
-  50% { opacity: 0.6; }
-}
-@keyframes countdownPulse {
-  from { transform: scale(1); opacity: 0.8; }
-  to { transform: scale(1.1); opacity: 1; }
-}
-@keyframes gradientMove {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-@keyframes shake {
-  0%,100% { transform: translate(0,0); }
-  25% { transform: translate(3px,-2px); }
-  50% { transform: translate(-3px,2px); }
-  75% { transform: translate(2px,1px); }
-}
-
-/* ================= CRITICAL MODE ================= */
-body.critical {
-  animation: shake 0.3s infinite, gradientBG 25s ease infinite;
-  background: linear-gradient(-45deg, #330000, #ff0000, #220011);
-}
-body.critical h1 { color: #ff0000; text-shadow: 0 0 30px #ff0000,0 0 80px #ff5500; }
-body.critical #countdown { color:#ff6666; text-shadow:0 0 20px #ff0000,0 0 50px #ff3300; }
-body.critical .subtext { color:#ffaaaa; }
-body.critical .progress-bar { background: linear-gradient(90deg,#ff0000,#ff6600); }
 </style>
 </head>
 <body>
-<h1>☣️ EX-WIFE EVENT HORIZON ☣️</h1>
-<div id="countdown">Loading existential dread...</div>
-<div class="subtext" id="status">Peace levels: stable | Emotional shields: holding</div>
-<div class="warning">Impact Date: August 8, 2032</div>
 
-<div class="progress-container">
-  <div class="progress-bar" id="peaceBar"></div>
-</div>
-
-<footer>Powered by therapy, sarcasm, and sheer willpower.</footer>
-
-<audio id="siren" preload="auto">
-  <source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" type="audio/ogg">
-</audio>
+<div id="countdown">00:00:00:00</div>
 
 <script>
-const targetDate = new Date("August 8, 2032 00:00:00").getTime();
-const startDate = new Date().getTime();
-const siren = document.getElementById('siren');
-let criticalMode = false;
+  // Countdown
+  const targetDate = new Date(2025, 11, 31, 23, 59, 59).getTime();
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const distance = targetDate - now;
 
-// create particles
-for(let i=0;i<60;i++){
-  const p = document.createElement('div');
-  p.classList.add('particle');
-  const r=Math.random();
-  if(r<0.4)p.classList.add('red');
-  else if(r<0.7)p.classList.add('green');
-  else p.classList.add('orange');
-  p.style.top = Math.random()*window.innerHeight+'px';
-  p.style.left = Math.random()*window.innerWidth+'px';
-  p.style.animationDuration = (3 + Math.random()*3)+'s';
-  p.style.opacity = Math.random()*0.7 + 0.3;
-  document.body.appendChild(p);
-}
+    if(distance < 0){
+      document.getElementById("countdown").innerHTML = "00:00:00:00";
+      return;
+    }
 
-function updateCountdown(){
-  const now = new Date().getTime();
-  const distance = targetDate - now;
-  const total = targetDate - startDate;
+    const days = Math.floor(distance / (1000*60*60*24));
+    const hours = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
+    const minutes = Math.floor((distance % (1000*60*60)) / (1000*60));
+    const seconds = Math.floor((distance % (1000*60)) / 1000);
 
-  if(distance<=0){
-    document.getElementById("countdown").innerHTML="💥 It’s time... deploy emotional countermeasures.";
-    document.getElementById("peaceBar").style.width="0%";
-    document.body.classList.remove('critical');
-    siren.pause();
-    return;
+    document.getElementById("countdown").innerHTML =
+      `${String(days).padStart(2,'0')}:${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
+  }
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
+
+  // Generate buildings
+  const buildingCount = 30;
+  const buildings = [];
+  for(let i=0;i<buildingCount;i++){
+    const b = document.createElement('div');
+    b.className = 'building';
+    const width = Math.random()*40+30;
+    const height = Math.random()*250+150;
+    b.style.width = width+'px';
+    b.style.height = height+'px';
+    b.style.left = (i*40)+'px';
+    document.body.appendChild(b);
+    buildings.push(b);
+
+    // Windows
+    const rows = Math.floor(height/12);
+    const cols = Math.floor(width/6);
+    for(let r=0;r<rows;r++){
+      for(let c=0;c<cols;c++){
+        const w = document.createElement('div');
+        w.className = 'window';
+        w.style.top = r*12+'px';
+        w.style.left = c*6+'px';
+        w.style.animation = `flicker ${Math.random()*2+1}s infinite`;
+        b.appendChild(w);
+      }
+    }
   }
 
-  const years = Math.floor(distance / (1000*60*60*24*365.25));
-  const days = Math.floor((distance % (1000*60*60*24*365.25)) / (1000*60*60*24));
-  const hours = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
-  const minutes = Math.floor((distance % (1000*60*60)) / (1000*60));
-  const seconds = Math.floor((distance % (1000*60)) / 1000);
+  // Shake / tilt buildings randomly
+  setInterval(() => {
+    buildings.forEach(b => {
+      const tilt = (Math.random()-0.5)*4; // degrees
+      b.style.transform = `rotate(${tilt}deg)`;
+    });
+  }, 300);
 
-  document.getElementById("countdown").innerHTML=
-    `${years}y ${days}d ${hours}h ${minutes}m ${seconds}s`;
-
-  const percent = (distance/total)*100;
-  document.getElementById("peaceBar").style.width = percent+"%";
-
-  if(distance < 365*24*60*60*1000 && !criticalMode){
-    document.body.classList.add('critical');
-    document.getElementById("status").innerHTML="☣️ CRITICAL ALERT: Peace collapsing! Shields failing!";
-    siren.loop = true;
-    siren.volume = 0.3;
-    siren.play().catch(()=>{});
-    criticalMode=true;
+  // Fire particles
+  const particleCount = 60;
+  for(let i=0;i<particleCount;i++){
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random()*window.innerWidth+'px';
+    p.style.bottom = Math.random()*50+'px';
+    p.style.width = p.style.height = Math.random()*6+3+'px';
+    p.style.animationDelay = Math.random()*3+'s';
+    document.body.appendChild(p);
   }
-}
 
-updateCountdown();
-setInterval(updateCountdown,1000);
-</script>
-</body>
-</html>
+  // Smoke layers
+  for(let i=0;i<5;i++){
+    const s = document.createElement('div');
+    s.className = 'smoke';
+    s.style.left = (i*200)+'px';
+    s.style.animationDuration = (6 + Math.random()*4)+'s';
+    document.body.appendChild(s);
+  }
 
-updateCountdown();
-setInterval(updateCountdown,1000);
 </script>
+
 </body>
 </html>
