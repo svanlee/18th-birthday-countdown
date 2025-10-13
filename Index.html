@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Ex-Wife Countdown</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+  body {
+    font-family: 'Share Tech Mono', monospace;
+    background: radial-gradient(circle at center, #080808 0%, #000 100%);
+    color: #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: hidden;
+    margin: 0;
+    text-align: center;
+    transition: background 1s;
+  }
+
+  h1 {
+    font-size: 2.8em;
+    margin-bottom: 20px;
+    color: #ff3b3b;
+    text-shadow: 0 0 10px #ff3b3b, 0 0 25px #ff3b3b;
+    animation: flicker 2s infinite;
+  }
+
+  #countdown {
+    font-size: 2.2em;
+    color: #00ff88;
+    text-shadow: 0 0 10px #00ff88, 0 0 20px #00ff88;
+    margin: 20px 0;
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  .subtext {
+    font-size: 1.1em;
+    color: #aaa;
+    margin-bottom: 10px;
+    animation: flickerSoft 5s infinite;
+  }
+
+  .warning {
+    font-size: 1.3em;
+    margin-top: 25px;
+    color: #ff5555;
+    text-shadow: 0 0 15px #ff0000;
+    letter-spacing: 1px;
+  }
+
+  .progress-container {
+    width: 80%;
+    height: 20px;
+    background: #222;
+    border: 1px solid #444;
+    border-radius: 10px;
+    margin-top: 30px;
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #00ff88, #ffcc00, #ff3300);
+    width: 100%;
+    transition: width 1s linear;
+  }
+
+  footer {
+    position: absolute;
+    bottom: 15px;
+    color: #555;
+    font-size: 0.9em;
+    animation: flickerSoft 4s infinite;
+  }
+
+  /* Animations */
+  @keyframes flicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+    20%, 24%, 55% { opacity: 0.4; }
+  }
+  @keyframes flickerSoft {
+    0%, 100% { opacity: 0.9; }
+    50% { opacity: 0.6; }
+  }
+  @keyframes glow {
+    from { text-shadow: 0 0 10px #00ff88, 0 0 20px #00ff88; }
+    to { text-shadow: 0 0 30px #00ff88, 0 0 60px #00ff88; }
+  }
+  @keyframes shake {
+    0%,100% { transform: translate(0,0); }
+    25% { transform: translate(2px,-2px); }
+    50% { transform: translate(-2px,2px); }
+    75% { transform: translate(3px,1px); }
+  }
+
+  /* CRITICAL MODE STYLES */
+  body.critical {
+    background: radial-gradient(circle at center, #200 0%, #000 100%);
+    animation: shake 0.3s infinite;
+  }
+  body.critical h1 {
+    color: #ff0000;
+    text-shadow: 0 0 20px #ff0000, 0 0 60px #ff0000;
+  }
+  body.critical #countdown {
+    color: #ff6666;
+    text-shadow: 0 0 15px #ff0000;
+  }
+  body.critical .subtext {
+    color: #ffaaaa;
+  }
+  body.critical .progress-bar {
+    background: linear-gradient(90deg, #ff0000, #ff6600);
+  }
+</style>
+</head>
+<body>
+  <h1>⚠️ EX-WIFE EVENT HORIZON ⚠️</h1>
+  <div id="countdown">Loading existential dread...</div>
+  <div class="subtext" id="status">Peace levels: stable | Emotional shields: holding</div>
+  <div class="warning">Impact Date: August 8, 2032</div>
+
+  <div class="progress-container">
+    <div class="progress-bar" id="peaceBar"></div>
+  </div>
+
+  <footer>Powered by therapy, sarcasm, and sheer willpower.</footer>
+
+<audio id="siren" preload="auto">
+  <source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" type="audio/ogg">
+</audio>
+
+<script>
+  const targetDate = new Date("August 8, 2032 00:00:00").getTime();
+  const startDate = new Date().getTime();
+  const siren = document.getElementById('siren');
+  let criticalMode = false;
+
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+    const total = targetDate - startDate;
+
+    if (distance <= 0) {
+      document.getElementById("countdown").innerHTML =
+        "💥 It’s time... deploy emotional countermeasures.";
+      document.getElementById("peaceBar").style.width = "0%";
+      document.body.classList.remove('critical');
+      siren.pause();
+      return;
+    }
+
+    const years = Math.floor(distance / (1000 * 60 * 60 * 24 * 365.25));
+    const days = Math.floor((distance % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("countdown").innerHTML =
+      `${years}y ${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+    const percent = (distance / total) * 100;
+    document.getElementById("peaceBar").style.width = percent + "%";
+
+    // Critical alert mode: under 1 year left
+    if (distance < 365 * 24 * 60 * 60 * 1000 && !criticalMode) {
+      document.body.classList.add('critical');
+      document.getElementById("status").innerHTML =
+        "⚠️ CRITICAL ALERT: Peace levels collapsing! Shields failing!";
+      siren.loop = true;
+      siren.volume = 0.3;
+      siren.play().catch(()=>{});
+      criticalMode = true;
+    }
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+</script>
+</body>
+</html>
